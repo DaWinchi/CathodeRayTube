@@ -15,12 +15,23 @@ typedef struct layer
 	double pun;
 };
 
+struct RectangleObject
+{
+	float x, y, width, height;
+};
 
 class CModelDraw : public CStatic
 {
 
 public:
 	double xmin, xmax, ymin, ymax;
+
+	RectangleObject *globalRectangle;
+	RectangleObject *cathod;
+	RectangleObject anod1;
+	RectangleObject anod2;
+	RectangleObject conductorTop;
+	RectangleObject conductorBottom;
 
 	CModelDraw();
 	~CModelDraw();

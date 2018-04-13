@@ -30,9 +30,19 @@ void CModelDraw::DrawItem(LPDRAWITEMSTRUCT RECT)
 	Bitmap bmp(RECT->rcItem.right, RECT->rcItem.bottom, &gr);
 	Graphics grBmp(&bmp);
 	
-	SolidBrush brush(Color::Azure);
+	Pen penGlobRect(Color::White, 3);
+	SolidBrush brushCathodRect(Color::Blue);
+	SolidBrush brushAnodRect(Color::Red);
+	SolidBrush brushConductorRect(Color::White);
 	
-	grBmp.FillRectangle(&brush, X(RECT, -50), Y(RECT, 50), Width(RECT, 100), Height(RECT, 100));
+	grBmp.Clear(Color::Black);
+
+	grBmp.DrawRectangle(&penGlobRect, X(RECT, globalRectangle->x), Y(RECT, globalRectangle->y),
+		Width(RECT, globalRectangle->width), Height(RECT, globalRectangle->height));
+
+	grBmp.FillRectangle(&brushAnodRect, X(RECT, cathod->x), Y(RECT, cathod->y),
+		Width(RECT, cathod->width), Height(RECT, cathod->height));
+	
 
 	
 	
