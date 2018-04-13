@@ -33,7 +33,7 @@ void CModelDraw::DrawItem(LPDRAWITEMSTRUCT RECT)
 	Pen penGlobRect(Color::White, 3);
 	SolidBrush brushCathodRect(Color::Blue);
 	SolidBrush brushAnodRect(Color::Red);
-	SolidBrush brushConductorRect(Color::White);
+	SolidBrush brushConductorRect(Color::DarkKhaki);
 	
 	grBmp.Clear(Color::Black);
 
@@ -49,9 +49,12 @@ void CModelDraw::DrawItem(LPDRAWITEMSTRUCT RECT)
 	grBmp.FillRectangle(&brushAnodRect, X(RECT, anod2->x), Y(RECT, anod2->y),
 		Width(RECT, anod2->width), Height(RECT, anod2->height));
 
+	grBmp.FillRectangle(&brushConductorRect, X(RECT, conductorBottom->x), Y(RECT, conductorBottom->y),
+		Width(RECT, conductorBottom->width), Height(RECT, conductorBottom->height));
+	
+	grBmp.FillRectangle(&brushConductorRect, X(RECT, conductorTop->x), Y(RECT, conductorTop->y),
+		Width(RECT, conductorTop->width), Height(RECT, conductorTop->height));
 
-	
-	
 	gr.DrawImage(&bmp, 0, 0);
 }
 
