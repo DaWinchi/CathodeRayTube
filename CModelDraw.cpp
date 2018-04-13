@@ -28,25 +28,39 @@ void CModelDraw::DrawItem(LPDRAWITEMSTRUCT RECT)
 	
 	Graphics gr(RECT->hDC);
 	Bitmap bmp(RECT->rcItem.right, RECT->rcItem.bottom, &gr);
-	Graphics gr_bmp(&bmp);
+	Graphics grBmp(&bmp);
 	
+	SolidBrush brush(Color::Azure);
+	
+	grBmp.FillRectangle(&brush, X(RECT, -50), Y(RECT, 50), Width(RECT, 100), Height(RECT, 100));
+
 	
 	
 	gr.DrawImage(&bmp, 0, 0);
 }
 
 
-
-
-
-
-
-float CModelDraw::X(LPDRAWITEMSTRUCT RECT, double x)
+REAL CModelDraw::X(LPDRAWITEMSTRUCT RECT, float x)
 {
-	return (float)(RECT->rcItem.right) / (float)(xmax - xmin)*((x)-xmin);
+	return (REAL)(RECT->rcItem.right) / (xmax - xmin)*((x)-xmin);
 }
 
-float CModelDraw::Y(LPDRAWITEMSTRUCT RECT, double y)
+REAL CModelDraw::Y(LPDRAWITEMSTRUCT RECT, float y)
 {
-	return -(float)(RECT->rcItem.bottom) / (float)(ymax - ymin)*((y)-ymax);
+	return -(REAL)(RECT->rcItem.bottom) / (ymax - ymin)*((y)-ymax);
+}
+
+REAL CModelDraw::Width(LPDRAWITEMSTRUCT RECT, float width)
+{
+	return (REAL)(RECT->rcItem.right) / (xmax - xmin)*width;
+}
+
+REAL CModelDraw::Height(LPDRAWITEMSTRUCT RECT, float height)
+{
+	return (REAL)(RECT->rcItem.bottom) / (ymax - ymin)*height;
+}
+
+void CModelDraw::Update()
+{
+	Invalidate();
 }

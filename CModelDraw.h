@@ -4,6 +4,7 @@
 #include <vector>
 #include <iostream>
 
+using namespace Gdiplus;
 typedef struct layer
 {
 	float *data;
@@ -24,9 +25,11 @@ public:
 	CModelDraw();
 	~CModelDraw();
 	virtual void DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct);
-	void transfer(double left, double right, double low, double up, double shag_setki_x, double shag_setki_y);
-	float X(LPDRAWITEMSTRUCT RECT, double x);
-	float Y(LPDRAWITEMSTRUCT RECT, double y);
+	void Update();
+	REAL X(LPDRAWITEMSTRUCT RECT, float x);
+	REAL Y(LPDRAWITEMSTRUCT RECT, float y);
+	REAL Width(LPDRAWITEMSTRUCT RECT, float width);
+	REAL Height(LPDRAWITEMSTRUCT RECT, float height);
 
 };
 
