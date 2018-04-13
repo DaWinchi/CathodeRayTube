@@ -33,6 +33,9 @@
     <ClInclude Include="CModelDraw.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
+    <ClInclude Include="CCalculate.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CathodeRayTube.cpp">
@@ -45,6 +48,9 @@
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="CModelDraw.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="CCalculate.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>
