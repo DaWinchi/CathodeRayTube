@@ -40,9 +40,15 @@ void CModelDraw::DrawItem(LPDRAWITEMSTRUCT RECT)
 	grBmp.DrawRectangle(&penGlobRect, X(RECT, globalRectangle->x), Y(RECT, globalRectangle->y),
 		Width(RECT, globalRectangle->width), Height(RECT, globalRectangle->height));
 
-	grBmp.FillRectangle(&brushAnodRect, X(RECT, cathod->x), Y(RECT, cathod->y),
+	grBmp.FillRectangle(&brushCathodRect, X(RECT, cathod->x), Y(RECT, cathod->y),
 		Width(RECT, cathod->width), Height(RECT, cathod->height));
 	
+	grBmp.FillRectangle(&brushAnodRect, X(RECT, anod1->x), Y(RECT, anod1->y),
+		Width(RECT, anod1->width), Height(RECT, anod1->height));
+
+	grBmp.FillRectangle(&brushAnodRect, X(RECT, anod2->x), Y(RECT, anod2->y),
+		Width(RECT, anod2->width), Height(RECT, anod2->height));
+
 
 	
 	

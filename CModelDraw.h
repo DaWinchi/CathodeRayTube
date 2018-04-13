@@ -28,10 +28,10 @@ public:
 
 	RectangleObject *globalRectangle;
 	RectangleObject *cathod;
-	RectangleObject anod1;
-	RectangleObject anod2;
-	RectangleObject conductorTop;
-	RectangleObject conductorBottom;
+	RectangleObject *anod1;
+	RectangleObject *anod2;
+	RectangleObject *conductorTop;
+	RectangleObject *conductorBottom;
 
 	CModelDraw();
 	~CModelDraw();
