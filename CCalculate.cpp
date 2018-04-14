@@ -35,7 +35,7 @@ void CCalculate::CalculateSystem(double stepTime)
 
 	GeneratePoints();
 
-	int sizePoints = points->size();
+	int sizePoints = points[0].size();
 
 	double *forcesX = new double[sizePoints];
 	double *forcesY = new double[sizePoints];
@@ -108,9 +108,9 @@ void CCalculate::TerminatePoints()
 			newPoints.push_back(points[0][i]);
 		}
 	}
+	
+	points->swap(newPoints);
 
-	points[0].clear();
-	points[0].resize(newPoints.size());
-	points[0] = newPoints;
+	
 		
 }
