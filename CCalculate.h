@@ -13,9 +13,10 @@ using namespace std;
 class CCalculate
 {
 public:
-	
+
 	int countGneratepoints;
 	vector<PointEl> *points;
+	RectangleObject *globalRectangle;
 	RectangleObject *cathod;
 	RectangleObject *anodTop;
 	RectangleObject *anodBottom;
@@ -24,6 +25,7 @@ public:
 	void CalculateSystem(double stepTime);
 	CCalculate();
 	CCalculate(vector <PointEl> *points);
+	void TerminatePoints();
 	void CalculateInit(double stepTime);
 	double ForceX(double x1, double x2);
 	double ForceY(double y1, double y2);

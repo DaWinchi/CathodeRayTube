@@ -63,10 +63,13 @@ void CCalculate::CalculateSystem(double stepTime)
 			points[0][i].dx*stepTime + forcesX[i] * stepTime*stepTime / 2;
 		points[0][i].y = points[0][i].y +
 			points[0][i].dy*stepTime + forcesY[i] * stepTime*stepTime / 2;
+		points[0][i].dx = points[0][i].dx + forcesX[i] * stepTime;
+		points[0][i].dy = points[0][i].dy + forcesY[i] * stepTime;
 	}
 
 	delete[]forcesX;
 	delete[]forcesY;
+	TerminatePoints();
 }
 
 double CCalculate::ForceX(double x1, double x2)
@@ -89,4 +92,25 @@ void CCalculate::CalculateInit(double stepTime)
 	GeneratePoints();
 	points[0][0].x = points[0][0].dx*stepTime;
 	points[0][0].y = points[0][0].dy*stepTime;
+}
+
+void CCalculate::TerminatePoints()
+{
+	int sizePoints = points[0].size();
+	vector <PointEl> newPoints;
+	for (int i = 0; i < sizePoints; ++i)
+	{
+		if (points[0][i].x<(globalRectangle->x + globalRectangle->width) &&
+			points[0][i].x>globalRectangle->x &&
+			points[0][i].y > (globalRectangle->y - globalRectangle->height) &&
+			points[0][i].y < globalRectangle->y)
+		{
+			newPoints.push_back(points[0][i]);
+		}
+	}
+
+	points[0].clear();
+	points[0].resize(newPoints.size());
+	points[0] = newPoints;
+		
 }
