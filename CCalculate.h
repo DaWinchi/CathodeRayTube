@@ -17,11 +17,14 @@ public:
 	int countGneratepoints;
 	vector<PointEl> *points;
 	RectangleObject *cathod;
+	RectangleObject *anodTop;
+	RectangleObject *anodBottom;
 
 	void GeneratePoints();
 	void CalculateSystem(double stepTime);
 	CCalculate();
 	CCalculate(vector <PointEl> *points);
+	void CalculateInit(double stepTime);
 	double ForceX(double x1, double x2);
 	double ForceY(double y1, double y2);
 	~CCalculate();
