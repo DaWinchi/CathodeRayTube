@@ -1,14 +1,14 @@
 #pragma once
 #include <vector>
+#include "CModelDraw.h"
+
+#define K 9e+9
+#define E 1.60217662e-19
 
 using namespace std;
 
-struct RectangleObject
-{
-	float x, y, width, height;
-};
 
-struct Point
+struct PointEl
 {
 	double x;
 	double y;
@@ -21,11 +21,13 @@ class CCalculate
 public:
 	
 	int countGneratepoints;
-	vector<Point> *points;
+	vector<PointEl> *points;
 	RectangleObject *cathod;
 
 	void GeneratorPoints();
+	void CalculateSystem(double stepTime);
 	CCalculate();
+	CCalculate(vector <PointEl> *points);
 	~CCalculate();
 };
 

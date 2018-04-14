@@ -5,15 +5,6 @@
 #include <iostream>
 
 using namespace Gdiplus;
-typedef struct layer
-{
-	float *data;
-	int NN;
-	double shag_otrisovki_po_x;
-	double first_x;
-	Gdiplus::Color color;
-	double pun;
-};
 
 struct RectangleObject
 {
