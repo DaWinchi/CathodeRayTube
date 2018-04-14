@@ -36,6 +36,9 @@
     <ClInclude Include="CCalculate.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
+    <ClInclude Include="PointEl.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CathodeRayTube.cpp">

@@ -1,20 +1,14 @@
 #pragma once
 #include <vector>
-#include "CModelDraw.h"
+#include <omp.h> 
+#include "PointEl.h"
 
 #define K 9e+9
-#define E 1.60217662e-19
+#define Q 1.60217662e-19
+#define M 9.10938356e-31
 
 using namespace std;
 
-
-struct PointEl
-{
-	double x;
-	double y;
-	double dx;
-	double dy;
-};
 
 class CCalculate
 {
@@ -24,10 +18,12 @@ public:
 	vector<PointEl> *points;
 	RectangleObject *cathod;
 
-	void GeneratorPoints();
+	void GeneratePoints();
 	void CalculateSystem(double stepTime);
 	CCalculate();
 	CCalculate(vector <PointEl> *points);
+	double ForceX(double x1, double x2);
+	double ForceY(double y1, double y2);
 	~CCalculate();
 };
 

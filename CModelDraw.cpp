@@ -55,6 +55,11 @@ void CModelDraw::DrawItem(LPDRAWITEMSTRUCT RECT)
 	grBmp.FillRectangle(&brushConductorRect, X(RECT, conductorTop->x), Y(RECT, conductorTop->y),
 		Width(RECT, conductorTop->width), Height(RECT, conductorTop->height));
 
+	if (points != nullptr)
+	{
+		for (int i=0; i<points[0].size();++i)
+			grBmp.FillEllipse(&brushConductorRect, X(RECT, points[0][i].x), Y(RECT, points[0][i].y), (REAL)10, (REAL)10);
+	}
 	gr.DrawImage(&bmp, 0, 0);
 }
 

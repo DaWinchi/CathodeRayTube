@@ -3,13 +3,10 @@
 #include <gdiplus.h>
 #include <vector>
 #include <iostream>
+#include "PointEl.h"
 
 using namespace Gdiplus;
-
-struct RectangleObject
-{
-	float x, y, width, height;
-};
+using namespace std;
 
 class CModelDraw : public CStatic
 {
@@ -23,6 +20,8 @@ public:
 	RectangleObject *anod2;
 	RectangleObject *conductorTop;
 	RectangleObject *conductorBottom;
+
+	vector <PointEl> *points;
 
 	CModelDraw();
 	~CModelDraw();
