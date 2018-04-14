@@ -56,7 +56,7 @@ void CCalculate::CalculateSystem(double stepTime)
 			}
 		}
 		forcesX[i] += ForceCathodAnod(points[0][i].y);
-
+		forcesY[i] += ForceConductor(points[0][i].x);
 	}
 
 #pragma omp parallel for
@@ -73,6 +73,16 @@ void CCalculate::CalculateSystem(double stepTime)
 	delete[]forcesX;
 	delete[]forcesY;
 	TerminatePoints();
+
+	SinusU buf1 = sinusUtop[0];
+	SinusU buf2 = sinusUbottom[0];
+	for (int i = 0; i < sinusUtop.size()-1; ++i)
+	{
+		sinusUtop[i] = sinusUtop[i + 1];
+		sinusUbottom[i] = sinusUbottom[i + 1];
+	}
+	sinusUtop[sinusUtop.size() - 1] = buf1;
+	sinusUbottom[sinusUtop.size() - 1] = buf1;
 }
 
 double CCalculate::ForceX(double x1, double x2)
@@ -102,11 +112,24 @@ double CCalculate::ForceCathodAnod(double y)
 
 double CCalculate::ForceConductor(double x)
 {
-	if (x > conductorTop->x&&x < (conductorTop->x + conductorTop->width))
+	int sizecond = sinusUtop.size();
+	double value = 0;
+	for (int i = 0; i < sizecond - 1; ++i)
 	{
+		if (x > sinusUtop[i].x&&x < sinusUtop[i + 1].x)
+		{
+			if (sinusUtop[i].U > sinusUbottom[i].U)
+			{
+				value += Q*(sinusUtop[i].U - sinusUbottom[i].U) / (globalRectangle->height);
+			}
+			else
+			{
+				value += Q*(sinusUtop[i].U - sinusUbottom[i].U) / (globalRectangle->height);
+			}
+		}
 
 	}
-	return 0;
+	return value;
 }
 
 void CCalculate::CalculateInit(double stepTime)
@@ -126,17 +149,17 @@ void CCalculate::TerminatePoints()
 	{
 		bool IsOk = true;
 		if ((points[0][i].x > (globalRectangle->x + globalRectangle->width)) ||
-			(points[0][i].x < (cathod->x + cathod->width) )||
+			(points[0][i].x < (cathod->x + cathod->width)) ||
 			(points[0][i].y < (globalRectangle->y - globalRectangle->height)) ||
 			(points[0][i].y > globalRectangle->y)) IsOk = false;
 
-		if ((points[0][i].x < anodTop->x)&&
+		if ((points[0][i].x < anodTop->x) &&
 			(points[0][i].y > (anodTop->y - anodTop->height))) IsOk = false;
 
 		if ((points[0][i].x < anodBottom->x) &&
-			(points[0][i].y <anodBottom->y)) IsOk = false;
+			(points[0][i].y < anodBottom->y)) IsOk = false;
 
-		if(IsOk)
+		if (IsOk)
 		{
 			newPoints.push_back(points[0][i]);
 		}
@@ -151,12 +174,20 @@ void CCalculate::CreateSinusU()
 	double v = (double)(1.f / 60.f);
 	double xleft = conductorBottom->x;
 	double xright = conductorBottom->x + conductorBottom->width;
-	double step= conductorBottom->width / N;
+	double step = conductorBottom->width / N;
 	for (int i = 0; i <= N; ++i)
 	{
 		SinusU su;
 		su.x = xleft + step*i;
-		su.U = sin((double)(4.f*M_PI*v*i));
-		sinusU.push_back(su);
+		su.U = Ucon1*sin((double)(4.f*M_PI*v*i));
+		sinusUtop.push_back(su);
+	}
+
+	for (int i = 0; i < sinusUtop.size(); ++i)
+	{
+		SinusU su;
+		su.U = -sinusUtop[i].U;
+		su.x = sinusUtop[i].x;
+		sinusUbottom.push_back(su);
 	}
 }

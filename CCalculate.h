@@ -26,7 +26,8 @@ public:
 	RectangleObject *conductorTop;
 	RectangleObject *conductorBottom;
 
-	vector<SinusU> sinusU;
+	vector<SinusU> sinusUtop;
+	vector<SinusU> sinusUbottom;
 
 
 	void GeneratePoints();
