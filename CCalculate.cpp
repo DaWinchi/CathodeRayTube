@@ -23,7 +23,7 @@ void CCalculate::GeneratePoints()
 		PointEl pt;
 		pt.x = cathod->x + cathod->width;
 		pt.y = (double)rand() / RAND_MAX*(cathod->height - cathod->y) * 2 - (cathod->height - cathod->y);
-		pt.dx = (double)(rand() % 201);
+		pt.dx = (double)(rand() % 101);
 		pt.dy = (double)(rand() % 401 - 200);
 		points->push_back(pt);
 	}
@@ -54,6 +54,8 @@ void CCalculate::CalculateSystem(double stepTime)
 				forcesY[i] += ForceY(points[0][i].y, points[0][j].y) / M;
 			}
 		}
+		forcesX[i] += ForceCathodAnod(points[0][i].y);
+
 	}
 
 #pragma omp parallel for
@@ -85,6 +87,25 @@ double CCalculate::ForceY(double y1, double y2)
 	if (y2 > y1)  return -K*Q*Q / (y1 - y2) / (y1 - y2);
 	else return K*Q*Q / (y1 - y2) / (y1 - y2);
 
+}
+
+double CCalculate::ForceCathodAnod(double y)
+{
+	if (y<cathod->y&&y>(cathod->y - cathod->height))
+	{
+		double value = (Uan - Ucat) / fabs((cathod->x + cathod->width) - anodTop->x);
+		return value*Q;
+	}
+	else return 0;
+}
+
+double CCalculate::ForceConductor(double x)
+{
+	if (x > conductorTop->x&&x < (conductorTop->x + conductorTop->width))
+	{
+
+	}
+	return 0;
 }
 
 void CCalculate::CalculateInit(double stepTime)
@@ -120,7 +141,4 @@ void CCalculate::TerminatePoints()
 	}
 
 	points->swap(newPoints);
-
-
-
 }

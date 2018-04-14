@@ -14,12 +14,17 @@ class CCalculate
 {
 public:
 
+
+	double Ucat, Uan, Ucon1, Ucon2;
+
 	int countGneratepoints;
 	vector<PointEl> *points;
 	RectangleObject *globalRectangle;
 	RectangleObject *cathod;
 	RectangleObject *anodTop;
 	RectangleObject *anodBottom;
+	RectangleObject *conductorTop;
+	RectangleObject *conductorBottom;
 
 	void GeneratePoints();
 	void CalculateSystem(double stepTime);
@@ -29,6 +34,9 @@ public:
 	void CalculateInit(double stepTime);
 	double ForceX(double x1, double x2);
 	double ForceY(double y1, double y2);
+
+	double ForceCathodAnod(double y);
+	double ForceConductor(double x);
 	~CCalculate();
 };
 
