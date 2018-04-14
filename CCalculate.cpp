@@ -2,6 +2,7 @@
 #include "CCalculate.h"
 #include <time.h>
 
+#define M_PI 3.14159265358
 
 CCalculate::CCalculate()
 {
@@ -113,6 +114,7 @@ void CCalculate::CalculateInit(double stepTime)
 	GeneratePoints();
 	points[0][0].x = points[0][0].dx*stepTime;
 	points[0][0].y = points[0][0].dy*stepTime;
+	CreateSinusU();
 }
 
 void CCalculate::TerminatePoints()
@@ -141,4 +143,20 @@ void CCalculate::TerminatePoints()
 	}
 
 	points->swap(newPoints);
+}
+
+void CCalculate::CreateSinusU()
+{
+	int N = 60;
+	double v = (double)(1.f / 60.f);
+	double xleft = conductorBottom->x;
+	double xright = conductorBottom->x + conductorBottom->width;
+	double step= conductorBottom->width / N;
+	for (int i = 0; i <= N; ++i)
+	{
+		SinusU su;
+		su.x = xleft + step*i;
+		su.U = sin((double)(4.f*M_PI*v*i));
+		sinusU.push_back(su);
+	}
 }

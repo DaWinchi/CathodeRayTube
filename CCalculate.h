@@ -26,6 +26,9 @@ public:
 	RectangleObject *conductorTop;
 	RectangleObject *conductorBottom;
 
+	vector<SinusU> sinusU;
+
+
 	void GeneratePoints();
 	void CalculateSystem(double stepTime);
 	CCalculate();
@@ -34,7 +37,7 @@ public:
 	void CalculateInit(double stepTime);
 	double ForceX(double x1, double x2);
 	double ForceY(double y1, double y2);
-
+	void CreateSinusU();
 	double ForceCathodAnod(double y);
 	double ForceConductor(double x);
 	~CCalculate();

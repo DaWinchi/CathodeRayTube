@@ -13,3 +13,8 @@ struct RectangleObject
 	float x, y, width, height;
 };
 
+struct SinusU
+{
+	double x;
+	double U;
+};
