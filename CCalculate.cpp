@@ -24,7 +24,7 @@ void CCalculate::GeneratePoints()
 		pt.x = cathod->x + cathod->width;
 		pt.y = (double)rand()/RAND_MAX*(cathod->height - cathod->y)*2- (cathod->height - cathod->y);
 		pt.dx = (double)(rand() % 201);
-		pt.dy = (double)(rand() % 41 - 20);
+		pt.dy = (double)(rand() % 401 - 200);
 		points->push_back(pt);
 	}
 }
@@ -50,8 +50,8 @@ void CCalculate::CalculateSystem(double stepTime)
 				if (i == j) continue;
 				else
 				{
-					forcesX[i] += ForceX(points[0][i].x, points[0][j].x);
-					forcesY[i] += ForceY(points[0][i].y, points[0][j].y);
+					forcesX[i] += ForceX(points[0][i].x, points[0][j].x)/M;
+					forcesY[i] += ForceY(points[0][i].y, points[0][j].y)/M;
 				}
 			}
 		}
@@ -101,7 +101,7 @@ void CCalculate::TerminatePoints()
 	for (int i = 0; i < sizePoints; ++i)
 	{
 		if (points[0][i].x<(globalRectangle->x + globalRectangle->width) &&
-			points[0][i].x>globalRectangle->x &&
+			points[0][i].x>(cathod->x+cathod->width) &&
 			points[0][i].y > (globalRectangle->y - globalRectangle->height) &&
 			points[0][i].y < globalRectangle->y)
 		{
