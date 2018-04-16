@@ -13,6 +13,8 @@ CCalculate::CCalculate(vector <PointEl> *points, vector<PointF> *pointsGraph)
 {
 	this->points = points;
 	this->pointsGraph = pointsGraph;
+	alltime = 0;
+
 }
 CCalculate::~CCalculate()
 {
@@ -25,7 +27,7 @@ void CCalculate::GeneratePoints()
 		PointEl pt;
 		pt.x = cathod->x + cathod->width;
 		pt.y = (double)rand() / RAND_MAX*(cathod->height - cathod->y) * 2 - (cathod->height - cathod->y);
-		pt.dx = (double)(rand() % 101);
+		pt.dx = (double)(rand() % 201);
 		pt.dy = (double)(rand() % 401 - 200);
 		points->push_back(pt);
 	}
@@ -36,6 +38,9 @@ void CCalculate::CalculateSystem(double stepTime)
 	omp_set_num_threads(omp_get_num_procs());
 
 	GeneratePoints();
+
+	w = 2.f*M_PI / 12.f / stepTime; //частота синуса
+	UpdateU();
 
 	int sizePoints = points[0].size();
 
@@ -75,15 +80,7 @@ void CCalculate::CalculateSystem(double stepTime)
 	delete[]forcesY;
 	TerminatePoints();
 
-	SinusU buf1 = sinusUtop[0];
-	SinusU buf2 = sinusUbottom[0];
-	for (int i = 0; i < sinusUtop.size()-1; ++i)
-	{
-		sinusUtop[i] = sinusUtop[i + 1];
-		sinusUbottom[i] = sinusUbottom[i + 1];
-	}
-	sinusUtop[sinusUtop.size() - 1] = buf1;
-	sinusUbottom[sinusUtop.size() - 1] = buf1;
+	alltime += stepTime;
 }
 
 double CCalculate::ForceX(double x1, double x2)
@@ -115,21 +112,18 @@ double CCalculate::ForceConductor(double x)
 {
 	int sizecond = sinusUtop.size();
 	double value = 0;
-	for (int i = 0; i < sizecond - 1; ++i)
+	if (x > conductorTop->x && x < (conductorTop->x + conductorTop->width))
 	{
-		if (x > sinusUtop[i].x&&x < sinusUtop[i + 1].x)
+		if (Ucon1 > Ucon2)
 		{
-			if (sinusUtop[i].U > sinusUbottom[i].U)
-			{
-				value += Q*(sinusUtop[i].U - sinusUbottom[i].U) / (globalRectangle->height);
-			}
-			else
-			{
-				value += Q*(sinusUtop[i].U - sinusUbottom[i].U) / (globalRectangle->height);
-			}
+			value += (Ucon1 - Ucon2) / (globalRectangle->height);
 		}
-
+		else
+		{
+			value += (Ucon1 - Ucon2) / (globalRectangle->height);
+		}
 	}
+
 	return value;
 }
 
@@ -138,7 +132,6 @@ void CCalculate::CalculateInit(double stepTime)
 	GeneratePoints();
 	points[0][0].x = points[0][0].dx*stepTime;
 	points[0][0].y = points[0][0].dy*stepTime;
-	CreateSinusU();
 }
 
 void CCalculate::TerminatePoints()
@@ -153,9 +146,9 @@ void CCalculate::TerminatePoints()
 		{
 			int sizeRegistr = pointsGraph[0].size();
 #pragma omp parallel for
-			for (int j = 0; j < sizeRegistr-1; ++j)
+			for (int j = 0; j < sizeRegistr - 1; ++j)
 			{
-				if (points[0][i].y > pointsGraph[0][j].X&& points[0][i].y < pointsGraph[0][j+1].X)
+				if (points[0][i].y > pointsGraph[0][j].X&& points[0][i].y < pointsGraph[0][j + 1].X)
 				{
 					pointsGraph[0][j].Y++;
 				}
@@ -185,26 +178,8 @@ void CCalculate::TerminatePoints()
 
 }
 
-void CCalculate::CreateSinusU()
+void CCalculate::UpdateU()
 {
-	int N = 60;
-	double v = (double)(1.f / 60.f);
-	double xleft = conductorBottom->x;
-	double xright = conductorBottom->x + conductorBottom->width;
-	double step = conductorBottom->width / N;
-	for (int i = 0; i <= N; ++i)
-	{
-		SinusU su;
-		su.x = xleft + step*i;
-		su.U = Ucon1*sin((double)(4.f*M_PI*v*i));
-		sinusUtop.push_back(su);
-	}
-
-	for (int i = 0; i < sinusUtop.size(); ++i)
-	{
-		SinusU su;
-		su.U = -sinusUtop[i].U;
-		su.x = sinusUtop[i].x;
-		sinusUbottom.push_back(su);
-	}
+	Ucon1 = Uampl_cond*sin(w*alltime);
+	Ucon2 = -Ucon1;
 }

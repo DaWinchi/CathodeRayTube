@@ -15,7 +15,7 @@ class CCalculate
 public:
 
 
-	double Ucat, Uan, Ucon1, Ucon2;
+	double Ucat, Uan, Ucon1, Ucon2, Uampl_cond;
 	int countGneratepoints;
 	vector<PointEl> *points;
 	vector<PointF> *pointsGraph;
@@ -31,6 +31,8 @@ public:
 	vector<SinusU> sinusUtop;
 	vector<SinusU> sinusUbottom;
 
+	double alltime;
+	double w;
 
 	void GeneratePoints();
 	void CalculateSystem(double stepTime);
@@ -40,7 +42,7 @@ public:
 	void CalculateInit(double stepTime);
 	double ForceX(double x1, double x2);
 	double ForceY(double y1, double y2);
-	void CreateSinusU();
+	void UpdateU();
 	double ForceCathodAnod(double y);
 	double ForceConductor(double x);
 	~CCalculate();
