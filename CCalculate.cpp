@@ -39,7 +39,7 @@ void CCalculate::CalculateSystem(double stepTime)
 
 	GeneratePoints();
 
-	w = 2.f*M_PI / 12.f / stepTime; //частота синуса
+	w = 2.f*M_PI / 36.f / stepTime; //частота синуса
 	UpdateU();
 
 	int sizePoints = points[0].size();
@@ -116,11 +116,11 @@ double CCalculate::ForceConductor(double x)
 	{
 		if (Ucon1 > Ucon2)
 		{
-			value += (Ucon1 - Ucon2) / (globalRectangle->height);
+			value += Q*(Ucon1 - Ucon2) / (globalRectangle->height);
 		}
 		else
 		{
-			value += (Ucon1 - Ucon2) / (globalRectangle->height);
+			value += Q*(Ucon1 - Ucon2) / (globalRectangle->height);
 		}
 	}
 

@@ -35,6 +35,7 @@ void CModelDraw::DrawItem(LPDRAWITEMSTRUCT RECT)
 	SolidBrush brushCathodRect(Color::Blue);
 	SolidBrush brushAnodRect(Color::Red);
 	SolidBrush brushConductorRect(Color::DarkKhaki);
+	SolidBrush brushPoints(Color::Yellow);
 	
 	grBmp.Clear(Color::Black);
 
@@ -60,7 +61,7 @@ void CModelDraw::DrawItem(LPDRAWITEMSTRUCT RECT)
 	if (points != nullptr)
 	{
 		for (int i=0; i<points[0].size();++i)
-			grBmp.FillEllipse(&brushConductorRect, X(RECT, points[0][i].x), Y(RECT, points[0][i].y), (REAL)10, (REAL)10);
+			grBmp.FillEllipse(&brushPoints, X(RECT, points[0][i].x)-5, Y(RECT, points[0][i].y)-5, (REAL)10, (REAL)10);
 	}
 	gr.DrawImage(&bmp, 0, 0);
 	LeaveCriticalSection(&cs);
