@@ -187,6 +187,7 @@
     <ClInclude Include="CathodeRayTube.h" />
     <ClInclude Include="CathodeRayTubeDlg.h" />
     <ClInclude Include="CCalculate.h" />
+    <ClInclude Include="CGraphic.h" />
     <ClInclude Include="CModelDraw.h" />
     <ClInclude Include="PointEl.h" />
     <ClInclude Include="resource.h" />
@@ -197,6 +198,7 @@
     <ClCompile Include="CathodeRayTube.cpp" />
     <ClCompile Include="CathodeRayTubeDlg.cpp" />
     <ClCompile Include="CCalculate.cpp" />
+    <ClCompile Include="CGraphic.cpp" />
     <ClCompile Include="CModelDraw.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

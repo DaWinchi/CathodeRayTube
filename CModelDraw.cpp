@@ -4,12 +4,12 @@
 
 using namespace Gdiplus;
 
-ULONG_PTR token;
+ULONG_PTR token1;
 CModelDraw::CModelDraw()
 {
 	Status s;
 	GdiplusStartupInput input;
-	s = GdiplusStartup(&token, &input, NULL);
+	s = GdiplusStartup(&token1, &input, NULL);
 	if (s != Ok)
 	{
 		MessageBox(L"ERROR!!!", L"Ошибка", MB_ICONERROR);
@@ -19,7 +19,7 @@ CModelDraw::CModelDraw()
 
 CModelDraw::~CModelDraw()
 {
-	GdiplusShutdown(token);
+	GdiplusShutdown(token1);
 }
 
 
