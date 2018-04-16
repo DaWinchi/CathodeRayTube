@@ -11,8 +11,9 @@ using namespace std;
 class CGraphic : public CStatic
 {
 public:
-public:
-	double xmin, xmax, ymin, ymax;
+	double xmin, xmax, ymin, ymax, step_x, step_y;
+
+	vector<PointF> *points;
 
 	CGraphic();
 	~CGraphic();
