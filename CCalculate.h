@@ -8,7 +8,7 @@
 #define M 9.10938356e-31
 
 using namespace std;
-
+using namespace Gdiplus;
 
 class CCalculate
 {
@@ -16,9 +16,11 @@ public:
 
 
 	double Ucat, Uan, Ucon1, Ucon2;
-
 	int countGneratepoints;
 	vector<PointEl> *points;
+	vector<PointF> *pointsGraph;
+
+
 	RectangleObject *globalRectangle;
 	RectangleObject *cathod;
 	RectangleObject *anodTop;
@@ -33,7 +35,7 @@ public:
 	void GeneratePoints();
 	void CalculateSystem(double stepTime);
 	CCalculate();
-	CCalculate(vector <PointEl> *points);
+	CCalculate(vector <PointEl> *points, vector <PointF> *pointsGraph);
 	void TerminatePoints();
 	void CalculateInit(double stepTime);
 	double ForceX(double x1, double x2);

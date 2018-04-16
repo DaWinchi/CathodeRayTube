@@ -4,6 +4,8 @@
 
 using namespace Gdiplus;
 
+
+extern CRITICAL_SECTION cs;
 ULONG_PTR token2;
 CGraphic::CGraphic()
 {
@@ -25,6 +27,21 @@ CGraphic::~CGraphic()
 
 void CGraphic::DrawItem(LPDRAWITEMSTRUCT RECT)
 {
+	EnterCriticalSection(&cs);
+	if (points != nullptr)
+	{
+		int size = points->size();
+		double max = 0;
+		for (int i = 0; i < size; ++i)
+		{
+			if (points[0][i].Y > max) max = points[0][i].Y;
+		}
+		ymax = max + max / 3.f;
+		ymin = -ymax / 20.f;
+		step_y = ymax / 3.f;
+
+	}
+	LeaveCriticalSection(&cs);
 
 	Graphics gr(RECT->hDC);
 	Bitmap bmp(RECT->rcItem.right, RECT->rcItem.bottom, &gr);
@@ -95,6 +112,7 @@ void CGraphic::DrawItem(LPDRAWITEMSTRUCT RECT)
 		str.Format(_T("%.1f"), y);
 		grBmp.DrawString(str, -1, &podpis, PointF(X(RECT, 0), Y(RECT, y) + 2.f), NULL, &brush);
 	}
+	EnterCriticalSection(&cs);
 	if (points != nullptr)
 	{
 		int size = points->size();
@@ -104,6 +122,8 @@ void CGraphic::DrawItem(LPDRAWITEMSTRUCT RECT)
 				X(RECT, points[0][i + 1].X), Y(RECT, points[0][i + 1].Y));
 		}
 	}
+	LeaveCriticalSection(&cs);
+
 	gr.DrawImage(&bmp, 0, 0);
 }
 

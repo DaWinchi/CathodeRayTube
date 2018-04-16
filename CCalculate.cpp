@@ -9,9 +9,10 @@ CCalculate::CCalculate()
 	srand(time(NULL));
 }
 
-CCalculate::CCalculate(vector <PointEl> *points)
+CCalculate::CCalculate(vector <PointEl> *points, vector<PointF> *pointsGraph)
 {
 	this->points = points;
+	this->pointsGraph = pointsGraph;
 }
 CCalculate::~CCalculate()
 {
@@ -147,6 +148,20 @@ void CCalculate::TerminatePoints()
 	//#pragma omp parallel for
 	for (int i = 0; i < sizePoints; ++i)
 	{
+		//регистрация точек
+		if (fabs(points[0][i].y) <= globalRectangle->y&&points[0][i].x > (globalRectangle->x + globalRectangle->width))
+		{
+			int sizeRegistr = pointsGraph[0].size();
+#pragma omp parallel for
+			for (int j = 0; j < sizeRegistr-1; ++j)
+			{
+				if (points[0][i].y > pointsGraph[0][j].X&& points[0][i].y < pointsGraph[0][j+1].X)
+				{
+					pointsGraph[0][j].Y++;
+				}
+			}
+		}
+		//проверка точки на выход из зоны
 		bool IsOk = true;
 		if ((points[0][i].x > (globalRectangle->x + globalRectangle->width)) ||
 			(points[0][i].x < (cathod->x + cathod->width)) ||
@@ -166,6 +181,8 @@ void CCalculate::TerminatePoints()
 	}
 
 	points->swap(newPoints);
+
+
 }
 
 void CCalculate::CreateSinusU()
