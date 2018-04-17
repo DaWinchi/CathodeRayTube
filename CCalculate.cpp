@@ -28,7 +28,7 @@ void CCalculate::GeneratePoints()
 		pt.x = cathod->x + cathod->width;
 		pt.y = (double)rand() / RAND_MAX*(cathod->height - cathod->y) * 2 - (cathod->height - cathod->y);
 		pt.dx = (double)(rand() % 201);
-		pt.dy = (double)(rand() % 401 - 200);
+		pt.dy = (double)(rand() % 41 - 20);
 		points->push_back(pt);
 	}
 }
@@ -39,7 +39,7 @@ void CCalculate::CalculateSystem(double stepTime)
 
 	GeneratePoints();
 
-	w = 2.f*M_PI / 36.f / stepTime; //частота синуса
+	w = 2.f*M_PI / 4.f/12.f / stepTime; //частота синуса
 	UpdateU();
 
 	int sizePoints = points[0].size();
