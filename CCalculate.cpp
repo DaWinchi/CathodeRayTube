@@ -28,7 +28,7 @@ void CCalculate::GeneratePoints()
 		pt.x = cathod->x + cathod->width;
 		pt.y = (double)rand() / RAND_MAX*(cathod->height - cathod->y) * 2 - (cathod->height - cathod->y);
 		pt.dx = (double)(rand() % 201);
-		pt.dy = 0;
+		pt.dy = (double)(rand() % 41 - 20);;
 		points->push_back(pt);
 	}
 }
@@ -39,7 +39,7 @@ void CCalculate::CalculateSystem(double stepTime)
 
 	GeneratePoints();
 
-	w = 2.f*M_PI / 600.f / stepTime; //частота синуса
+	w = 2.f*M_PI / 1200.f / stepTime; //частота синуса
 	UpdateU();
 
 	int sizePoints = points[0].size();
@@ -78,7 +78,7 @@ void CCalculate::CalculateSystem(double stepTime)
 
 	delete[]forcesX;
 	delete[]forcesY;
-	TerminatePoints();
+	TerminatePoints(stepTime);
 
 	alltime += stepTime;
 }
@@ -132,9 +132,11 @@ void CCalculate::CalculateInit(double stepTime)
 	points[0][0].y = points[0][0].dy*stepTime;
 }
 
-void CCalculate::TerminatePoints()
+void CCalculate::TerminatePoints(double stepTime)
 {
 	int sizePoints = points[0].size();
+	int countDispersingPoints = 0;
+	double summY = 0;
 	vector <PointEl> newPoints;
 	//#pragma omp parallel for
 	for (int i = 0; i < sizePoints; ++i)
@@ -142,15 +144,8 @@ void CCalculate::TerminatePoints()
 		//регистрация точек
 		if (fabs(points[0][i].y) <= globalRectangle->y&&points[0][i].x > (globalRectangle->x + globalRectangle->width))
 		{
-			int sizeRegistr = pointsGraph[0].size();
-#pragma omp parallel for
-			for (int j = 0; j < sizeRegistr - 1; ++j)
-			{
-				if (points[0][i].y > pointsGraph[0][j].X&& points[0][i].y < pointsGraph[0][j + 1].X)
-				{
-					pointsGraph[0][j].Y++;
-				}
-			}
+			summY += points[0][i].y;
+			++countDispersingPoints;
 		}
 		//проверка точки на выход из зоны
 		bool IsOk = true;
@@ -171,6 +166,15 @@ void CCalculate::TerminatePoints()
 		}
 	}
 
+	if (countDispersingPoints > 0)
+	{
+		PointF pt;
+		pt.X = alltime;
+		pt.Y = (double)summY / countDispersingPoints;
+
+		pointsGraph[0].push_back(pt);
+	}
+	
 	points->swap(newPoints);
 
 

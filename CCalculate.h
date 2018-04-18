@@ -38,7 +38,7 @@ public:
 	void CalculateSystem(double stepTime);
 	CCalculate();
 	CCalculate(vector <PointEl> *points, vector <PointF> *pointsGraph);
-	void TerminatePoints();
+	void TerminatePoints(double stepTime);
 	void CalculateInit(double stepTime);
 	double ForceX(double x1, double x2, double y1, double y2);
 	double ForceY(double x1, double x2, double y1, double y2);
