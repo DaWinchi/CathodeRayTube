@@ -40,10 +40,10 @@ public:
 	CCalculate(vector <PointEl> *points, vector <PointF> *pointsGraph);
 	void TerminatePoints();
 	void CalculateInit(double stepTime);
-	double ForceX(double x1, double x2);
-	double ForceY(double y1, double y2);
+	double ForceX(double x1, double x2, double y1, double y2);
+	double ForceY(double x1, double x2, double y1, double y2);
 	void UpdateU();
-	double ForceCathodAnod(double y);
+	double ForceCathodAnod(double x);
 	double ForceConductor(double x);
 	~CCalculate();
 };

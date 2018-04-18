@@ -28,7 +28,7 @@ void CCalculate::GeneratePoints()
 		pt.x = cathod->x + cathod->width;
 		pt.y = (double)rand() / RAND_MAX*(cathod->height - cathod->y) * 2 - (cathod->height - cathod->y);
 		pt.dx = (double)(rand() % 201);
-		pt.dy = (double)(rand() % 41 - 20);
+		pt.dy = 0;
 		points->push_back(pt);
 	}
 }
@@ -39,7 +39,7 @@ void CCalculate::CalculateSystem(double stepTime)
 
 	GeneratePoints();
 
-	w = 2.f*M_PI / 4.f/12.f / stepTime; //частота синуса
+	w = 2.f*M_PI / 600.f / stepTime; //частота синуса
 	UpdateU();
 
 	int sizePoints = points[0].size();
@@ -57,8 +57,8 @@ void CCalculate::CalculateSystem(double stepTime)
 			if (i == j) continue;
 			else
 			{
-				forcesX[i] += ForceX(points[0][i].x, points[0][j].x) / M;
-				forcesY[i] += ForceY(points[0][i].y, points[0][j].y) / M;
+				forcesX[i] += ForceX(points[0][i].x, points[0][j].x, points[0][i].y, points[0][j].y) / M;
+				forcesY[i] += ForceY(points[0][i].x, points[0][j].x, points[0][i].y, points[0][j].y) / M;
 			}
 		}
 		forcesX[i] += ForceCathodAnod(points[0][i].y);
@@ -83,27 +83,25 @@ void CCalculate::CalculateSystem(double stepTime)
 	alltime += stepTime;
 }
 
-double CCalculate::ForceX(double x1, double x2)
+double CCalculate::ForceX(double x1, double x2, double y1, double y2)
 {
 	if (fabs(x1 - x2) < 1e-6) return 0;
-	if (x2 > x1) return -K*Q*Q / (x1 - x2) / (x1 - x2);
-	else return K*Q*Q / (x1 - x2) / (x1 - x2);
+	else return K*Q*Q / ((x1 - x2) * (x1 - x2)+(y1-y2)*(y1-y2))*(x1-x2)/fabs(x1-x2);
 
 }
-double CCalculate::ForceY(double y1, double y2)
+double CCalculate::ForceY(double x1, double x2, double y1, double y2)
 {
 	if (fabs(y1 - y2) < 1e-6) return 0;
-	if (y2 > y1)  return -K*Q*Q / (y1 - y2) / (y1 - y2);
-	else return K*Q*Q / (y1 - y2) / (y1 - y2);
-
+	else  return K*Q*Q/((x1 - x2) * (x1 - x2) + (y1 - y2)*(y1 - y2))*(y1 - y2) / fabs(y1 - y2);
+	
 }
 
-double CCalculate::ForceCathodAnod(double y)
+double CCalculate::ForceCathodAnod(double x)
 {
-	if (y<cathod->y&&y>(cathod->y - cathod->height))
+	if (x>(cathod->x+cathod->width)&&x<anodTop->x)
 	{
 		double value = (Uan - Ucat) / fabs((cathod->x + cathod->width) - anodTop->x);
-		return value*Q;
+		return value;
 	}
 	else return 0;
 }
@@ -116,11 +114,11 @@ double CCalculate::ForceConductor(double x)
 	{
 		if (Ucon1 > Ucon2)
 		{
-			value += Q*(Ucon1 - Ucon2) / (globalRectangle->height);
+			value += (Ucon1 - Ucon2) / (globalRectangle->height);
 		}
 		else
 		{
-			value += Q*(Ucon1 - Ucon2) / (globalRectangle->height);
+			value += (Ucon1 - Ucon2) / (globalRectangle->height);
 		}
 	}
 
