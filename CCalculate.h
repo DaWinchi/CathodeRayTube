@@ -35,6 +35,7 @@ public:
 
 	double alltime;
 	double w;
+	double v;
 
 	void GeneratePoints();
 	void CalculateSystem(double stepTime);

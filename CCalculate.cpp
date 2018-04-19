@@ -41,7 +41,7 @@ void CCalculate::CalculateSystem(double stepTime)
 
 	GeneratePoints();
 
-	w = 2.f*M_PI / 600.f / stepTime; //частота синуса
+	w = 2.f*M_PI / v / stepTime; //частота синуса
 	UpdateU();
 	
 
