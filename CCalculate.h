@@ -19,6 +19,8 @@ public:
 	int countGneratepoints;
 	vector<PointEl> *points;
 	vector<PointF> *pointsGraph;
+	vector<PointF> *pointsCondTop;
+	vector<PointF> *pointsCondBottom;
 
 
 	RectangleObject *globalRectangle;
@@ -37,7 +39,7 @@ public:
 	void GeneratePoints();
 	void CalculateSystem(double stepTime);
 	CCalculate();
-	CCalculate(vector <PointEl> *points, vector <PointF> *pointsGraph);
+	CCalculate(vector <PointEl> *points, vector <PointF> *pointsGraph, vector <PointF> *pointsCondTop, vector <PointF> *pointsCondBot);
 	void TerminatePoints(double stepTime);
 	void CalculateInit(double stepTime);
 	double ForceX(double x1, double x2, double y1, double y2);

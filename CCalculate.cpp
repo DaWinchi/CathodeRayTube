@@ -9,10 +9,12 @@ CCalculate::CCalculate()
 	srand(time(NULL));
 }
 
-CCalculate::CCalculate(vector <PointEl> *points, vector<PointF> *pointsGraph)
+CCalculate::CCalculate(vector <PointEl> *points, vector <PointF> *pointsGraph, vector <PointF> *pointsCondTop, vector <PointF> *pointsCondBot)
 {
 	this->points = points;
 	this->pointsGraph = pointsGraph;
+	this->pointsCondTop = pointsCondTop;
+	this->pointsCondBottom = pointsCondBot;
 	alltime = 0;
 
 }
@@ -39,8 +41,9 @@ void CCalculate::CalculateSystem(double stepTime)
 
 	GeneratePoints();
 
-	w = 2.f*M_PI / 1200.f / stepTime; //частота синуса
+	w = 2.f*M_PI / 600.f / stepTime; //частота синуса
 	UpdateU();
+	
 
 	int sizePoints = points[0].size();
 
@@ -81,6 +84,13 @@ void CCalculate::CalculateSystem(double stepTime)
 	TerminatePoints(stepTime);
 
 	alltime += stepTime;
+
+	PointF pt;
+	pt.X = alltime;
+	pt.Y = Ucon1;
+	pointsCondTop[0].push_back(pt);
+	pt.Y = Ucon2;
+	pointsCondBottom[0].push_back(pt);
 }
 
 double CCalculate::ForceX(double x1, double x2, double y1, double y2)
@@ -114,11 +124,11 @@ double CCalculate::ForceConductor(double x)
 	{
 		if (Ucon1 > Ucon2)
 		{
-			value += (Ucon1 - Ucon2) / (globalRectangle->height);
+			value += -(Ucon1 - Ucon2) / (globalRectangle->height);
 		}
 		else
 		{
-			value += (Ucon1 - Ucon2) / (globalRectangle->height);
+			value += -(Ucon1 - Ucon2) / (globalRectangle->height);
 		}
 	}
 
