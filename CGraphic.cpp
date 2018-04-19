@@ -64,10 +64,12 @@ void CGraphic::DrawItem(LPDRAWITEMSTRUCT RECT)
 	grBmp.SetSmoothingMode(SmoothingModeAntiAlias);
 	grBmp.Clear(Color::Black);
 
-
+	EnterCriticalSection(&cs);
 	//главные оси
 	grBmp.DrawLine(&osi_pen, X(RECT, xmin), Y(RECT, 0), X(RECT, xmax), Y(RECT, 0));
 	grBmp.DrawLine(&osi_pen, X(RECT, 0), Y(RECT, ymin), X(RECT, 0), Y(RECT, ymax));
+
+
 
 	//сетка
 	//вертикальные линии
@@ -117,6 +119,8 @@ void CGraphic::DrawItem(LPDRAWITEMSTRUCT RECT)
 		str.Format(_T("%.3f"), y);
 		grBmp.DrawString(str, -1, &podpis, PointF(X(RECT, 0), Y(RECT, y) + 2.f), NULL, &brush);
 	}
+
+	LeaveCriticalSection(&cs);
 	EnterCriticalSection(&cs);
 	if (points != nullptr)
 	{
